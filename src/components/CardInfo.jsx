@@ -20,12 +20,12 @@ const CardInfo = () => {
 			{data.map((item) => (
 				<div
 					key={item.id}
-					className='card flex items-center w-96 border border-sky-400 p-4 gap-4 h-[800px] flex-col rounded-lg shadow-md'
+					className='card flex items-center w-96 border border-sky-400 p-4 gap-4 h-[850px] flex-col rounded-lg shadow-md'
 				>
 					<div className='card-image'>
 						<img
 							className='w-full h-full object-cover rounded-t-lg'
-							src={item.images?.[0]}
+							src={item.image}
 							alt={item.title}
 						/>
 					</div>
@@ -40,15 +40,11 @@ const CardInfo = () => {
 								{item.creationAt?.slice(0, 10)}
 							</span>
 						</div>
-						{item.category && (
+						{item.rating && (
 							<div className='card-category mt-2 flex items-center text-sm'>
-								<span className='mr-2 text-gray-500'>Category:</span>
-								<span className='text-gray-700'>{item.category.name}</span>
-								<img
-									src={item.category.image}
-									alt='Category'
-									className='w-6 h-6 ml-2 rounded-full'
-								/>
+								<span className='mr-2 text-gray-500'>Rating:</span>
+								<span className='text-gray-700'>{item.rating.rate}</span>
+								<span>{item.rating.count}</span>
 							</div>
 						)}
 					</div>

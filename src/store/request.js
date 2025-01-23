@@ -6,7 +6,7 @@ export const getInfo = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-				'https://api.escuelajs.co/api/v1/products'
+				'https://fakestoreapi.com/products'
 			);
       return data;
     } catch (error) {
