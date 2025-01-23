@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getInfo } from './request';
 
 const initialState = {
-  data: [],
-  error: null,
-  loading: false,
+	data: [],
+	error: null,
+	isLoading: false,
 };
 
 const rickSlice = createSlice({
@@ -14,15 +14,15 @@ const rickSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getInfo.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(getInfo.fulfilled, (state, action) => {
         state.data = action.payload;
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(getInfo.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
+        state.isLoading = false;
       });
   },
 });
