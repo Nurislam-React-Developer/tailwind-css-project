@@ -50,7 +50,10 @@ const CardInfo = () => {
 							</div>
 						)}
 					</div>
-					<button className='bg-emerald-500 text-white font-bold py-2 rounded hover:bg-emerald-600 transition duration-300'>
+					<button
+						onClick={() => navigate(`/details/${item.id}`)}
+						className='bg-emerald-500 text-white font-bold py-2 rounded hover:bg-emerald-600 transition duration-300'
+					>
 						More Info
 					</button>
 				</div>

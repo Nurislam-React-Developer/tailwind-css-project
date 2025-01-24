@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getInfo } from './request';
+import { getInfo, getInfoDetails } from './request';
 
 const initialState = {
 	data: [],
@@ -23,7 +23,18 @@ const rickSlice = createSlice({
       .addCase(getInfo.rejected, (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
-      });
+      })
+      .addCase(getInfoDetails.pending, (state) => {
+        state.isLoading = true
+      }) 
+      .addCase(getInfoDetails.fulfilled, (state, action) => {
+        state.data = action.payload
+        state.isLoading = false
+      })
+      .addCase(getInfoDetails.rejected, (state, action) => {
+        state.error = action.payload
+        state.isLoading = false
+      })
   },
 });
 

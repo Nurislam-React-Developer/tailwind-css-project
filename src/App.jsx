@@ -1,12 +1,15 @@
 import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import CardDetails from './components/CardDetails';
 import CardInfo from './components/CardInfo';
-import Header from './components/Header';
 
 const App = () => {
 	return (
 		<div>
-			<Header />
-			<CardInfo />
+			<Routes>
+				<Route path='/' element={<CardInfo />} />
+				<Route path='/details/:id' element={<CardDetails />} />
+			</Routes>
 		</div>
 	);
 };
