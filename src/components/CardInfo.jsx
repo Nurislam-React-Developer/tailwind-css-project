@@ -20,7 +20,7 @@ const CardInfo = () => {
 			{data.map((item) => (
 				<div
 					key={item.id}
-					className='card flex items-center w-96 border border-sky-400 p-4 gap-4 h-[850px] flex-col rounded-lg shadow-md'
+					className='card flex items-center w-96 border border-sky-400 p-4 gap-4 h-auto flex-col rounded-lg shadow-md'
 				>
 					<div className='card-image'>
 						<img
