@@ -35,7 +35,7 @@ const CardInfo = () => {
 						</p>
 						<p className='text-gray-700'>{item.description}</p>
 						<div className='flex items-center justify-between mt-4'>
-							<p className='text-gray-700'>${item.price}</p>
+							<p className='text-green-700 text-[20px]'>${item.price}</p>
 							<span className='text-gray-500 text-sm'>
 								{item.creationAt?.slice(0, 10)}
 							</span>
