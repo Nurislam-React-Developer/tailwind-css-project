@@ -18,12 +18,20 @@ export const getInfo = createAsyncThunk(
 
 export const getInfoDetails = createAsyncThunk(
 	'request/getInfoDetails',
-	async (_, { rejectWithValue }) => {
+	async (id, { rejectWithValue }) => {
 		try {
-			const { data } = await axios.get(`${BASE_URL_DATEILS}`);
+			// Проверяем Local Storage
+			const savedData = localStorage.getItem(`product-${id}`);
+			if (savedData) {
+				return JSON.parse(savedData); // Если данные есть, возвращаем их
+			}
+
+			// Если данных в Local Storage нет, загружаем их из API
+			const { data } = await axios.get(`${BASE_URL_DATEILS}/${id}`);
+			localStorage.setItem(`product-${id}`, JSON.stringify(data)); // Сохраняем данные в Local Storage
 			return data;
 		} catch (error) {
-      return rejectWithValue(error)
-    }
+			return rejectWithValue(error.message);
+		}
 	}
 );
