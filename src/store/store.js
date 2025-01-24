@@ -3,6 +3,6 @@ import rickReducer from './rickSlice';
 
 export const store = configureStore({
   reducer: {
-    rick: rickReducer,
+    [rickReducer.name]: rickReducer.reducer
   },
 });

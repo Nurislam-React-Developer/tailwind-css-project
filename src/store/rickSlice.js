@@ -27,4 +27,4 @@ const rickSlice = createSlice({
   },
 });
 
-export default rickSlice.reducer;
+export default rickSlice

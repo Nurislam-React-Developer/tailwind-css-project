@@ -2,8 +2,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getInfo } from '../store/request';
 import { useEffect } from 'react';
 import Spinner from './Spinner';
+import { useNavigate } from 'react-router-dom';
 
 const CardInfo = () => {
+  const navigate = useNavigate()
 	const dispatch = useDispatch();
 	const { data, isLoading, error } = useSelector((state) => state.rick);
 
@@ -12,30 +14,30 @@ const CardInfo = () => {
 	}, [dispatch]);
 
 	if (isLoading) return <Spinner isLoading={true} />;
-	if (error) return <p>{error}</p>;
+	if (error) return <p className='text-red-500'>{error}</p>;
 	if (!Array.isArray(data)) return <p>No data available</p>;
 
 	return (
-		<div className='card-container flex flex-wrap gap-4 p-4 justify-center'>
+		<div className='card-container flex flex-wrap gap-6 p-4 justify-center'>
 			{data.map((item) => (
 				<div
 					key={item.id}
-					className='card flex items-center w-96 border border-sky-400 p-4 gap-4 h-auto flex-col rounded-lg shadow-md'
+					className='card transform transition-transform duration-300 hover:scale-105 flex flex-col w-80 border border-sky-400 p-4 gap-4 h-auto flex-col rounded-lg shadow-md hover:shadow-lg'
 				>
 					<div className='card-image'>
 						<img
-							className='w-full h-full object-cover rounded-t-lg'
+							className='w-full h-48 object-cover rounded-lg'
 							src={item.image}
 							alt={item.title}
 						/>
 					</div>
-					<div className='card-content p-4'>
-						<p className='font-mono text-emerald-400 text-lg font-bold'>
+					<div className='card-content p-4 flex-1'>
+						<p className='font-mono text-emerald-500 text-lg font-bold'>
 							{item.title}
 						</p>
 						<p className='text-gray-700'>{item.description}</p>
 						<div className='flex items-center justify-between mt-4'>
-							<p className='text-green-700 text-[20px]'>${item.price}</p>
+							<p className='text-green-700 text-lg'>${item.price}</p>
 							<span className='text-gray-500 text-sm'>
 								{item.creationAt?.slice(0, 10)}
 							</span>
@@ -44,10 +46,13 @@ const CardInfo = () => {
 							<div className='card-category mt-2 flex items-center text-sm'>
 								<span className='mr-2 text-gray-500'>Rating:</span>
 								<span className='text-gray-700'>{item.rating.rate}</span>
-								<span>{item.rating.count}</span>
+								<span className='text-gray-500'>({item.rating.count})</span>
 							</div>
 						)}
 					</div>
+					<button className='bg-emerald-500 text-white font-bold py-2 rounded hover:bg-emerald-600 transition duration-300'>
+						More Info
+					</button>
 				</div>
 			))}
 		</div>
