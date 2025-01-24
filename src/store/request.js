@@ -23,10 +23,17 @@ export const getInfoDetails = createAsyncThunk(
 			// Проверяем Local Storage
 			const savedData = localStorage.getItem(`product-${id}`);
 			if (savedData) {
-				return JSON.parse(savedData); // Если данные есть, возвращаем их
+				try {
+					// Пытаемся распарсить данные, если они есть
+					return JSON.parse(savedData);
+				} catch (error) {
+					console.error('Ошибка парсинга данных из Local Storage:', error);
+					// Если парсинг не удался, удаляем некорректные данные
+					localStorage.removeItem(`product-${id}`);
+				}
 			}
 
-			// Если данных в Local Storage нет, загружаем их из API
+			// Если данных в Local Storage нет или они некорректны, загружаем их из API
 			const { data } = await axios.get(`${BASE_URL_DATEILS}/${id}`);
 			localStorage.setItem(`product-${id}`, JSON.stringify(data)); // Сохраняем данные в Local Storage
 			return data;
@@ -35,3 +42,4 @@ export const getInfoDetails = createAsyncThunk(
 		}
 	}
 );
+
