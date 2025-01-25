@@ -20,17 +20,23 @@ const cartSlice = createSlice({
 			.addCase(addToCart.fulfilled, (state, action) => {
 				state.isLoading = false;
 
+				// Извлекаем продукты из возвращаемых данных
+				const product = action.payload.products[0]; // Предполагается, что добавляется один продукт
+
 				// Проверяем, есть ли товар уже в корзине
 				const existingItem = state.items.find(
-					(item) => item.id === action.payload.id
+					(item) => item.productId === product.productId
 				);
 
 				if (existingItem) {
 					// Если товар есть, увеличиваем его количество
-					existingItem.quantity += 1;
+					existingItem.quantity += product.quantity;
 				} else {
 					// Если товара нет, добавляем новый с количеством = 1
-					state.items.push({ ...action.payload, quantity: 1 });
+					state.items.push({
+						productId: product.productId,
+						quantity: product.quantity,
+					});
 				}
 			})
 			.addCase(addToCart.rejected, (state, action) => {

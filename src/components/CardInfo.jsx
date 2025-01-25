@@ -19,6 +19,7 @@ const CardInfo = () => {
 
 	const handleAddToCart = (product) => {
 		dispatch(addToCart(product)); // Добавляем товар в корзину
+    navigate("/cart")
 	};
 
 	return (

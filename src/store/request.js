@@ -1,70 +1,73 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getInfoDetails } from '../redux/actions'; // Импортируем экшен для загрузки данных
+import { Link } from 'react-router-dom';
 
-const BASE_URL = 'https://fakestoreapi.com';
-const CART_URL = `${BASE_URL}/carts`;
+const Cart = () => {
+  const dispatch = useDispatch();
+  const { items, isLoading, error, productDetails } = useSelector((state) => state.cart);
 
-// Получение всех продуктов
-export const getInfo = createAsyncThunk(
-	'request/getInfo',
-	async (_, { rejectWithValue }) => {
-		try {
-			const { data } = await axios.get(`${BASE_URL}/products`);
-			return data;
-		} catch (error) {
-			// Возвращаем более понятное сообщение об ошибке
-			return rejectWithValue(error.response?.data || 'Ошибка загрузки данных');
-		}
-	}
-);
+  useEffect(() => {
+    items.forEach((item) => {
+      if (productDetails && !productDetails[item.productId]) {
+        dispatch(getInfoDetails(item.productId)); // Загружаем информацию для каждого товара
+      }
+    });
+  }, [dispatch, items, productDetails]);
 
-// Получение деталей продукта с кешированием в Local Storage
-export const getInfoDetails = createAsyncThunk(
-	'request/getInfoDetails',
-	async (id, { rejectWithValue }) => {
-		try {
-			// Проверяем Local Storage
-			const cachedData = localStorage.getItem(`product-${id}`);
-			if (cachedData) {
-				try {
-					// Пытаемся распарсить данные
-					return JSON.parse(cachedData);
-				} catch {
-					// Удаляем некорректные данные из Local Storage
-					localStorage.removeItem(`product-${id}`);
-				}
-			}
+  if (isLoading) {
+    return <p>Загрузка...</p>;
+  }
 
-			// Загружаем данные из API, если в Local Storage ничего нет
-			const { data } = await axios.get(`${BASE_URL}/products/${id}`);
-			localStorage.setItem(`product-${id}`, JSON.stringify(data)); // Кешируем данные
-			return data;
-		} catch (error) {
-			return rejectWithValue(error.response?.data || 'Ошибка загрузки деталей');
-		}
-	}
-);
+  if (error) {
+    return <p>Произошла ошибка: {error}</p>;
+  }
 
-// Добавление товара в корзину
-export const addToCart = createAsyncThunk(
-	'request/addToCart',
-	async (product, { rejectWithValue }) => {
-		try {
-			const { data } = await axios.post(CART_URL, {
-				userId: Math.floor(Math.random() * 1000), // Генерация случайного userId
-				date: new Date().toISOString(), // Текущая дата
-				products: [
-					{
-						productId: product.id,
-						quantity: 1, // Начальное количество товара
-					},
-				],
-			});
-			return data;
-		} catch (error) {
-			return rejectWithValue(
-				error.response?.data || 'Ошибка добавления в корзину'
-			);
-		}
-	}
-);
+  return (
+    <div className="p-5">
+      <h1 className="text-2xl font-bold mb-5">Корзина</h1>
+      {items.length === 0 ? (
+        <p>Корзина пуста</p>
+      ) : (
+        <ul className="space-y-4">
+          {items.map((item) => {
+            const product = productDetails && productDetails[item.productId];
+            
+            if (!product) {
+              return (
+                <p key={item.productId}>
+                  Загружаем товар с ID {item.productId}...
+                </p>
+              );
+            }
+
+            return (
+              <li
+                key={item.productId}
+                className="flex justify-between items-center border-b pb-2"
+              >
+                <div>
+                  <p className="font-bold">Товар ID: {item.productId}</p>
+                  <p>Количество: {item.quantity}</p>
+                  <img
+                    src={product.image} // Показываем картинку товара
+                    alt={product.title}
+                    className="w-20 h-20 object-cover"
+                  />
+                  <p>{product.title}</p>
+                  <p>{product.description}</p>
+                  <p>Цена: ${product.price}</p>
+                </div>
+                <button className="bg-red-500 text-white px-4 py-2 rounded">
+                  Удалить
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default Cart;

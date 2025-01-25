@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import CardInfo from '../components/CardInfo';
 import BaseLayout from '../layouts/BaseLayout';
 import CardDetails from '../components/CardDetails';
-import Cart from '../components/Cart';
+import Cart from '../components/Cards';
 
 const router = createBrowserRouter([
 	{
