@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import CardInfo from '../components/CardInfo';
 import BaseLayout from '../layouts/BaseLayout';
 import CardDetails from '../components/CardDetails';
+import Cart from '../components/Cart';
 
 const router = createBrowserRouter([
 	{
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
 				path: '/details/:id',
         element: <CardDetails/>
 			},
+      {
+        path: '/cart',
+        element: <Cart/>
+      }
 		],
 	},
 ]);

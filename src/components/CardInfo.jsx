@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getInfo } from '../store/request';
+import { getInfo, addToCart } from '../store/request'; // Импортируем экшен для корзины
 import { useEffect } from 'react';
 import Spinner from './Spinner';
 import { useNavigate } from 'react-router-dom';
 
 const CardInfo = () => {
-  const navigate = useNavigate()
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { data, isLoading, error } = useSelector((state) => state.rick);
 
@@ -16,6 +16,10 @@ const CardInfo = () => {
 	if (isLoading) return <Spinner isLoading={true} />;
 	if (error) return <p className='text-red-500'>{error}</p>;
 	if (!Array.isArray(data)) return <p>No data available</p>;
+
+	const handleAddToCart = (product) => {
+		dispatch(addToCart(product)); // Добавляем товар в корзину
+	};
 
 	return (
 		<div className='card-container flex flex-wrap gap-6 p-4 justify-center'>
@@ -50,12 +54,20 @@ const CardInfo = () => {
 							</div>
 						)}
 					</div>
-					<button
-						onClick={() => navigate(`/details/${item.id}`)}
-						className='bg-emerald-500 text-white font-bold py-2 rounded hover:bg-emerald-600 transition duration-300'
-					>
-						More Info
-					</button>
+					<div className='flex gap-4'>
+						<button
+							onClick={() => navigate(`/details/${item.id}`)}
+							className='bg-emerald-500 text-white font-bold py-2 rounded hover:bg-emerald-600 transition duration-300 flex-1'
+						>
+							More Info
+						</button>
+						<button
+							onClick={() => handleAddToCart(item)}
+							className='bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600 transition duration-300 flex-1'
+						>
+							Add to Cart
+						</button>
+					</div>
 				</div>
 			))}
 		</div>

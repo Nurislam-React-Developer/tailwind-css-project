@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
 	return (
-		<header className='flex justify-around items-center bg-gradient-to-r from-slate-400 to-slate-600 p-4 shadow-lg transition-all duration-300'>
+		<header className='flex justify-around items-center bg-gradient-to-r from-slate-400 to-slate-600 p-1 shadow-lg transition-all duration-300'>
 			<img
 				src='src/assets/img/logo.png'
 				alt='logo'
@@ -20,6 +21,9 @@ const Header = () => {
 						</li>
 					))}
 				</ul>
+				<Link to='/cart'>
+					<button className='relative text-white bg-cyan-500 px-4 py-2 rounded-full hover:bg-cyan-600 transition-all'>Корзина</button>
+				</Link>
 			</section>
 		</header>
 	);
