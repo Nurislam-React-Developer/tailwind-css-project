@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getInfo, addToCart } from '../store/request'; // Импортируем экшен для корзины
+import { addToCart, getInfo, getInfoDetails } from '../store/request'; // Импортируем экшен для корзины
 import { useEffect } from 'react';
 import Spinner from './Spinner';
 import { useNavigate } from 'react-router-dom';
@@ -17,9 +17,9 @@ const CardInfo = () => {
 	if (error) return <p className='text-red-500'>{error}</p>;
 	if (!Array.isArray(data)) return <p>No data available</p>;
 
-	const handleAddToCart = (product) => {
-		dispatch(addToCart(product)); // Добавляем товар в корзину
-    navigate("/cart")
+	const handleAddToCart = async (product) => {
+	await	dispatch(addToCart(product)); // Добавляем товар в корзинуdispatch(getInfoDetails(product.id))
+  await  navigate("/cart")
 	};
 
 	return (

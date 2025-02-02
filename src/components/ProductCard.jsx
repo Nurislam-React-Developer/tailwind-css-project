@@ -2,12 +2,18 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/request';
 
-const ProductCard = ({ product }) => {
-	const dispatch = useDispatch();
 
-	const handleAddToCart = () => {
-		dispatch(addToCart(product)); // Передаем весь объект продукта в корзину
-	};
+const ProductCard = ({ product }) => {
+
+	const dispatch = useDispatch();
+const handleAddToCart = async () => {
+	try {
+		await dispatch(addToCart(product));
+	} catch (error) {
+		console.error('Ошибка добавления в корзину:', error);
+	}
+};
+
 
 	return (
 		<div className='border p-4 rounded shadow'>
@@ -27,5 +33,4 @@ const ProductCard = ({ product }) => {
 		</div>
 	);
 };
-
 export default ProductCard;

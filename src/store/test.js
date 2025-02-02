@@ -56,10 +56,8 @@ export const addToCart = createAsyncThunk(
 					},
 				],
 			});
-			console.log('Ответ от сервера:', data); // Лог ответа от сервера
 			return data;
 		} catch (error) {
-			console.error('Ошибка запроса:', error); // Лог ошибки
 			return rejectWithValue(
 				error.response?.data || 'Ошибка добавления в корзину'
 			);
