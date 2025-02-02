@@ -18,9 +18,11 @@ const CardInfo = () => {
 	if (!Array.isArray(data)) return <p>No data available</p>;
 
 	const handleAddToCart = async (product) => {
-	await	dispatch(addToCart(product)); // Добавляем товар в корзинуdispatch(getInfoDetails(product.id))
-  await  navigate("/cart")
+		await dispatch(addToCart(product));
+		await dispatch(getInfoDetails(product.id));
+		navigate('/cart');
 	};
+
 
 	return (
 		<div className='card-container flex flex-wrap gap-6 p-4 justify-center'>

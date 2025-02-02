@@ -8,10 +8,6 @@ const Cart = () => {
 		(state) => state.cart
 	);
 
-	const handleRemove = (productId) => {
-		dispatch(removeFromCart(productId));
-	};
-
 	if (isLoading) return <p>Загрузка корзины...</p>;
 	if (error) return <p>Ошибка: {error}</p>;
 
@@ -22,29 +18,47 @@ const Cart = () => {
 				<p>Корзина пуста</p>
 			) : (
 				<ul className='space-y-4'>
-					{items.map((item) => (
-						<li
-							key={item.productId}
-							className='flex justify-between items-center border-b pb-2'
-						>
-							<div>
-								<p className='font-bold'>
-									{productDetails[item.productId]?.title ||
-										`Товар ID: ${item.productId}`}
-								</p>
-								<p>Количество: {item.quantity}</p>
-								{productDetails[item.productId] && (
-									<p>Цена: ${productDetails[item.productId].price}</p>
-								)}
-							</div>
-							<button
-								onClick={() => handleRemove(item.productId)}
-								className='bg-red-500 text-white px-4 py-2 rounded'
+					{items.map((item) => {
+						const product = productDetails[item.productId];
+						return (
+							<li
+								key={item.productId}
+								className='flex items-center border p-4 rounded-lg shadow-md'
 							>
-								Удалить
-							</button>
-						</li>
-					))}
+								<div className='flex-shrink-0 w-32 h-32 mr-4'>
+									{product && (
+										<img
+											src={product.image}
+											alt={product.title}
+											className='w-full h-full object-contain'
+										/>
+									)}
+								</div>
+								<div className='flex-grow'>
+									<h3 className='text-xl font-bold mb-2'>
+										{product ? product.title : `Товар ID: ${item.productId}`}
+									</h3>
+									{product && (
+										<>
+											<p className='text-gray-600 mb-2'>
+												{product.description}
+											</p>
+											<p className='text-lg font-semibold text-green-600'>
+												Цена: ${product.price}
+											</p>
+										</>
+									)}
+									<p className='text-gray-500'>Количество: {item.quantity}</p>
+								</div>
+								<button
+									onClick={() => dispatch(removeFromCart(item.productId))}
+									className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-4'
+								>
+									Удалить
+								</button>
+							</li>
+						);
+					})}
 				</ul>
 			)}
 		</div>
