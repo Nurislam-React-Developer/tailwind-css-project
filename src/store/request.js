@@ -1,14 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'https://fakestoreapi.com';
+const BASE_URL = 'https://fakestoreapi.com/products';
 const CART_URL = `${BASE_URL}/carts`;
 
 export const getInfo = createAsyncThunk(
 	'request/getInfo',
 	async (_, { rejectWithValue }) => {
 		try {
-			const { data } = await axios.get(`${BASE_URL}/products`);
+			const { data } = await axios.get(`${BASE_URL}`);
 			return data;
 		} catch (error) {
 			// Возвращаем более понятное сообщение об ошибке
