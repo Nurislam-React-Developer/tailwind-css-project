@@ -1,14 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'https://fakestoreapi.com/products';
+const BASE_URL = 'https://fakestoreapi.com';
 const CART_URL = `${BASE_URL}/carts`;
 
 export const getInfo = createAsyncThunk(
 	'request/getInfo',
 	async (_, { rejectWithValue }) => {
 		try {
-			const { data } = await axios.get(`${BASE_URL}`);
+			const { data } = await axios.get(`${BASE_URL}/products`);
 			return data;
 		} catch (error) {
 			// Возвращаем более понятное сообщение об ошибке
@@ -66,3 +66,23 @@ export const addToCart = createAsyncThunk(
 		}
 	}
 );
+
+export const deleteFromCart = createAsyncThunk(
+	'cart/deleteFromCart',
+	async ({ productId, quantity }, { rejectWithValue }) => {
+		try {
+			if (quantity > 1) {
+				return { productId, quantity: quantity - 1 }; // Уменьшаем количество
+			} else {
+				await axios.delete(`${CART_URL}/${productId}`); // Удаляем товар с сервера
+				return { productId, quantity: 0 };
+			}
+		} catch (error) {
+			return rejectWithValue(
+				error.response?.data || 'Ошибка удаления из корзины'
+			);
+		}
+	}
+);
+
+

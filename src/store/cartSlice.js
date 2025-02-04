@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addToCart, getInfoDetails } from './request';
+import { addToCart, deleteFromCart, getInfoDetails } from './request';
 
 const initialState = {
 	items: [], // Товары в корзине
@@ -11,13 +11,7 @@ const initialState = {
 const cartSlice = createSlice({
 	name: 'cart',
 	initialState,
-	reducers: {
-		removeFromCart: (state, action) => {
-			state.items = state.items.filter(
-				(item) => item.productId !== action.payload
-			);
-		},
-	},
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
 			.addCase(addToCart.pending, (state) => {
@@ -53,9 +47,26 @@ const cartSlice = createSlice({
 			.addCase(getInfoDetails.rejected, (state, action) => {
 				state.isLoading = false;
 				state.error = action.payload;
+			})
+			.addCase(deleteFromCart.fulfilled, (state, action) => {
+				const { productId, quantity } = action.payload;
+				const existingItem = state.items.find(
+					(item) => item.productId === productId
+				);
+
+				if (existingItem) {
+					if (quantity > 0) {
+						existingItem.quantity = quantity; // Просто уменьшаем количество
+					} else {
+						state.items = state.items.filter(
+							(item) => item.productId !== productId
+						); // Удаляем товар
+					}
+				}
 			});
+
 	},
 });
 
 export const { removeFromCart } = cartSlice.actions;
-export default cartSlice
+export default cartSlice;
